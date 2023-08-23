@@ -1,7 +1,7 @@
 package com.android.apple
 
 data class Item(
-    val Icon: Int,
+    val profile: Int,
     val name: String,
     val content: String,
     val seller: String,
