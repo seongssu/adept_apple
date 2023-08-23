@@ -1,14 +1,18 @@
 package com.android.apple
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.apple.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private lateinit var applelauncher : ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -33,7 +37,18 @@ class MainActivity : AppCompatActivity() {
 
         adapter.itemClick = object : RecyclerViewAdapter.ItemClick{
             override fun onClick(view: View, position: Int) {
-                val name:String = dataList[position].name
+                val item = Intent(this@MainActivity,Detail::class.java)
+                intent.putExtra("item",item)
+                applelauncher.launch(intent)
+            }
+        }
+        applelauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if(it.resultCode == RESULT_OK){
+                val data = it.data
+                if(data != null){
+
+                }
+
             }
         }
     }

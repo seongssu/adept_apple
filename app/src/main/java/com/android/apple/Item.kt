@@ -1,5 +1,9 @@
 package com.android.apple
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Item(
     val profile: Int,
     val name: String,
@@ -9,4 +13,4 @@ data class Item(
     val adress: String,
     val love: Int,
     val chat: Int
-) {}
+) : Parcelable
