@@ -24,6 +24,7 @@ class MainActivityAdapter(private val izone: MutableList<MemberData>) : Recycler
         val profile = binding.mainProfile
         val name = binding.mainName
         val tel = binding.mainTel
+        val favorites = binding.mainFavorites
     }
 
     override fun getItemCount(): Int {
@@ -47,9 +48,14 @@ class MainActivityAdapter(private val izone: MutableList<MemberData>) : Recycler
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.apply {
-            itemView.setOnClickListener {
-                memberClick?.onClick(it, position)
+
+            tel.setOnClickListener{
+                memberClick?.onClick(it,position)
             }
+            favorites.setOnClickListener {
+                memberClick?.onClick(it,position)
+            }
+
            profile.setImageResource(izone[position].profile)
             name.text = izone[position].name
             tel.text = izone[position].tel
