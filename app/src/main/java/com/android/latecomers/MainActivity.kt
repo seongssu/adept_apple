@@ -1,11 +1,14 @@
 package com.android.latecomers
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.latecomers.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy {ActivityMainBinding.inflate(layoutInflater)}
@@ -37,6 +40,19 @@ class MainActivity : AppCompatActivity() {
         adapter.memberClick = object : MainActivityAdapter.MemberClick{
             override fun onClick(view: View, position:Int){
                 val item = modelList[position]
+
+                //전화번호 눌렀을때 전화걸기
+                val phoneNumber = item.tel
+                val intent = Intent(Intent.ACTION_CALL)
+                intent.data = Uri.parse("tel:$phoneNumber")
+                try {
+                    startActivity(intent)
+                } catch(e:Exception){
+                    Snackbar.make(view, "전화 권한이 없습니다.", Snackbar.LENGTH_SHORT).show()
+                }
+
+                //즐겨찾기
+
             }
         }
     }
