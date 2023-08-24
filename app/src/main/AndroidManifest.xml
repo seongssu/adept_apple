@@ -13,10 +13,13 @@
         android:theme="@style/Theme.Apple"
         tools:targetApi="31">
         <activity
+            android:name=".DetailAdapter"
+            android:exported="false" />
+        <activity
             android:name=".Detail"
             android:exported="false" />
         <activity
-            android:name=".RecyclerAdapter"
+            android:name=".RecyclerViewAdapter"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

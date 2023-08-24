@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.android.apple.databinding.ActivityRecyclerAdapterBinding
+import com.android.apple.databinding.ActivityRecyclerViewAdapterBinding
 
-class RecyclerViewAdapter(val apple: MutableList<Item>) : RecyclerView.Adapter<RecyclerViewAdapter
+class RecyclerViewAdapter(private val apple: MutableList<Item>) : RecyclerView
+.Adapter<RecyclerViewAdapter
 .Holder>() {
 
     interface ItemClick {
@@ -17,19 +18,19 @@ class RecyclerViewAdapter(val apple: MutableList<Item>) : RecyclerView.Adapter<R
 
     var itemClick: ItemClick? = null
 
-    inner class Holder(val binding: ActivityRecyclerAdapterBinding) : RecyclerView.ViewHolder
+    inner class Holder(val binding: ActivityRecyclerViewAdapterBinding) : RecyclerView.ViewHolder
         (binding.root) {
         val profile = binding.profile
         val name = binding.name
         val address = binding.address
         val price = binding.price
-        val chat = binding.chat
-        val love = binding.love
+        var chat = binding.chat
+        var love = binding.love
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val binding = ActivityRecyclerAdapterBinding.inflate(
+        val binding = ActivityRecyclerViewAdapterBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false
         )
@@ -45,6 +46,8 @@ class RecyclerViewAdapter(val apple: MutableList<Item>) : RecyclerView.Adapter<R
         holder.name.text = apple[position].name
         holder.address.text = apple[position].adress
         holder.price.text = apple[position].price
+        holder.chat.text = apple[position].chat.toString()
+        holder.love.text = apple[position].love.toString()
     }
 
     override fun getItemCount(): Int {
@@ -54,6 +57,4 @@ class RecyclerViewAdapter(val apple: MutableList<Item>) : RecyclerView.Adapter<R
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
-
 }
