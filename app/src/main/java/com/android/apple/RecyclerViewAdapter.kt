@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.apple.databinding.ActivityRecyclerViewAdapterBinding
+import java.text.NumberFormat
+import java.util.Locale
 
 class RecyclerViewAdapter(private val apple: MutableList<Item>) : RecyclerView
 .Adapter<RecyclerViewAdapter
@@ -45,9 +47,13 @@ class RecyclerViewAdapter(private val apple: MutableList<Item>) : RecyclerView
         holder.profile.setImageResource(apple[position].profile)
         holder.name.text = apple[position].name
         holder.address.text = apple[position].adress
-        holder.price.text = apple[position].price
         holder.chat.text = apple[position].chat.toString()
         holder.love.text = apple[position].love.toString()
+
+        val numberFormat = NumberFormat.getNumberInstance(Locale.US)
+        val intprice = numberFormat.format(apple[position].price)
+        val money = "$intprice 원"
+        holder.price.text = money
     }
 
     override fun getItemCount(): Int {

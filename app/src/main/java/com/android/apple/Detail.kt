@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.apple.databinding.ActivityDetailBinding
+import java.text.NumberFormat
+import java.util.Locale
 
 class Detail : AppCompatActivity() {
     private val binding by lazy { ActivityDetailBinding.inflate(layoutInflater)}
@@ -16,20 +18,30 @@ class Detail : AppCompatActivity() {
 
         val item = intent.getParcelableExtra<Item>("item")
         Log.d("Detail item", item.toString())
+        val itemList = mutableListOf<Item>()
+        if (item != null)  itemList.add(item)
 
-        if (item != null ) {
-            val adapter = DetailAdapter(arrayListOf(item))
-            binding.detailadapter.adapter = adapter
-            binding.detailadapter.layoutManager = LinearLayoutManager(this)
+        binding.apply {
+            detailProfile.setImageResource(itemList[0].profile)
+            detailName.text = itemList[0].name
+            detailSeller.text = itemList[0].seller
+            detailAddress.text = itemList[0].adress
+            detailContent.text = itemList[0].content
+            val numberFormat = NumberFormat.getNumberInstance(Locale.US)
+            val intprice = numberFormat.format(itemList[0].price)
+            val money = "$intprice 원"
+            detailPrice.text = money
         }
 
-//        binding.detailBack.setOnClickListener {
-//        intent = Intent(this, MainActivity::class.java).apply {
-//
-//        }
-//            setResult(RESULT_OK,intent)
-//            finish()
-//        }
+        binding.detailBack.bringToFront()
+        binding.detailBack.setOnClickListener {
+        intent = Intent(this, MainActivity::class.java).apply {
+
+        }
+            setResult(RESULT_OK,intent)
+            finish()
+        }
+
 
 
     }

@@ -9,7 +9,7 @@ data class Item(
     val name: String,
     val content: String,
     val seller: String,
-    val price: String,
+    val price: Int,
     val adress: String,
     var love: Int,
     var chat: Int
