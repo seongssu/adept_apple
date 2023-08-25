@@ -1,4 +1,8 @@
 package com.android.latecomers
 
-data class MemberData(val profile:Int, val name:String, val tel:String,var isFavorite: Boolean = false) {
-}
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class MemberData(val profile:Int, val name:String, val tel:String,var isFavorite: Boolean =
+    false): Parcelable
