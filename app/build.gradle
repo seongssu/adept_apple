@@ -2,7 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 }
-
+plugins {
+    id("kotlin-parcelize")
+}
 android {
     namespace 'com.android.latecomers'
     compileSdk 33

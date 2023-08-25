@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Latecomers"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivityAdapter"
+            android:name=".MainAdapter"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
