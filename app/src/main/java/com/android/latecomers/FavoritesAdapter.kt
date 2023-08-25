@@ -1,35 +1,34 @@
 package com.android.latecomers
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.android.latecomers.databinding.ActivityMainAdapterBinding
+import com.android.latecomers.databinding.ActivityFavoritesAdapterBinding
 
-class MainActivityAdapter(private val izone: MutableList<MemberData>) : RecyclerView
-.Adapter<MainActivityAdapter.Holder>() {
+class FavoritesAdapter (private val izones: MutableList<MemberData>) : RecyclerView
+.Adapter<FavoritesAdapter.Holder>() {
 
-    interface MemberClick {
+    interface favoritesMemberClick {
         fun onTelClick(view: View, position: Int)
         fun onFavoritesClick(view: View, position:Int)
     }
 
-    var memberClick: MemberClick? = null
+    var memberClick: favoritesMemberClick? = null
 
-    inner class Holder(val binding: ActivityMainAdapterBinding) : RecyclerView.ViewHolder(
+    inner class Holder(val binding: ActivityFavoritesAdapterBinding) : RecyclerView.ViewHolder(
         binding
             .root
     ) {
-        val profile = binding.mainProfile
-        val name = binding.mainName
-        val tel = binding.mainTel
-        val favorites = binding.mainFavorites
+        val profile = binding.favoritesProfile
+        val name = binding.favoritesName
+        val tel = binding.favoritesTel
+        val favorites = binding.favoritesFavorites
     }
 
     override fun getItemCount(): Int {
-        return izone.size
+        return izones.size
     }
 
     override fun getItemId(position: Int): Long {
@@ -40,7 +39,7 @@ class MainActivityAdapter(private val izone: MutableList<MemberData>) : Recycler
         parent: ViewGroup,
         viewType: Int
     ): Holder {
-        val binding = ActivityMainAdapterBinding.inflate(
+        val binding = ActivityFavoritesAdapterBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false
         )
@@ -48,6 +47,7 @@ class MainActivityAdapter(private val izone: MutableList<MemberData>) : Recycler
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        Log.d("Fadapter","Fadapter")
         holder.apply {
 
             tel.setOnClickListener{
@@ -56,10 +56,11 @@ class MainActivityAdapter(private val izone: MutableList<MemberData>) : Recycler
             favorites.setOnClickListener {
                 memberClick?.onFavoritesClick(it,position)
             }
+            Log.d("FavoritesFragment","FavoritesAdapter에서 받은 데이터 ${izones[position]}")
+            profile.setImageResource(izones[position].profile)
+            name.text = izones[position].name
+            tel.text = izones[position].tel
 
-           profile.setImageResource(izone[position].profile)
-            name.text = izone[position].name
-            tel.text = izone[position].tel
         }
 
     }

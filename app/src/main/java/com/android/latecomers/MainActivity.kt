@@ -4,9 +4,12 @@ package com.android.latecomers
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import com.android.latecomers.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
@@ -14,33 +17,46 @@ import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private lateinit var informationLauncher:ActivityResultLauncher<Intent>
+    private lateinit var tabLayout: TabLayout
+    private lateinit var mainFragment: MainFragment
+    private lateinit var favoritesFragment: FavoritesFragment
+    private lateinit var currentFragment: Fragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
         setContentView(binding.root)
 
-        val tabLayout = binding.tabLayout
-        val viewPager = binding.viewPager
+        tabLayout = binding.tabLayout
+        mainFragment = MainFragment()
+        favoritesFragment = FavoritesFragment()
+//        currentFragment = mainFragment
 
-        setFragment(MainFragment())
+//        val viewPager = binding.viewPager
+
+        val fragmentManager = supportFragmentManager
+        val screen: FragmentTransaction = fragmentManager.beginTransaction()
+        screen.add(R.id.fragmentView, mainFragment, "MainFragment")
+        screen.add(R.id.fragmentView, favoritesFragment, "FavoritesFragment")
+        screen.hide(favoritesFragment)
+        screen.commit()
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                val position = tab.position
+                val screen = supportFragmentManager.beginTransaction()
 
-                when (position) {
+                when (tab.position) {
                     0 -> {
-                        setFragment(MainFragment())
+                        screen.show(mainFragment)
+                        screen.hide(favoritesFragment)
                     }
-
                     1 -> {
-                        setFragment(FavoritesFragment())
+                        screen.show(favoritesFragment)
+                        screen.hide(mainFragment)
                     }
-                    // ... 그 외 탭 처리 ...
                 }
-            }
 
+                screen.commit()
+            }
             override fun onTabUnselected(tab: TabLayout.Tab) {
             }
 
@@ -48,22 +64,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         )
-        informationLauncher = registerForActivityResult(ActivityResultContracts
-            .StartActivityForResult()){
-            if(it.resultCode == RESULT_OK){
-                val data = it.data
-                if(data !=null){
-
-                }
-            }
-        }
-    }
-    private fun setFragment(frag: Fragment) {
-        supportFragmentManager.commit {
-            replace(R.id.fragmentView, frag)
-            setReorderingAllowed(true)
-            addToBackStack("")
-        }
     }
 }
 
