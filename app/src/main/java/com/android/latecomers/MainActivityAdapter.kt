@@ -12,7 +12,8 @@ class MainActivityAdapter(private val izone: MutableList<MemberData>) : Recycler
 .Adapter<MainActivityAdapter.Holder>() {
 
     interface MemberClick {
-        fun onClick(view: View, position: Int)
+        fun onTelClick(view: View, position: Int)
+        fun onFavoritesClick(view: View, position:Int)
     }
 
     var memberClick: MemberClick? = null
@@ -50,10 +51,10 @@ class MainActivityAdapter(private val izone: MutableList<MemberData>) : Recycler
         holder.apply {
 
             tel.setOnClickListener{
-                memberClick?.onClick(it,position)
+                memberClick?.onTelClick(it,position)
             }
             favorites.setOnClickListener {
-                memberClick?.onClick(it,position)
+                memberClick?.onFavoritesClick(it,position)
             }
 
            profile.setImageResource(izone[position].profile)
