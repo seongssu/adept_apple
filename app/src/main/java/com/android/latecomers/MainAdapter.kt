@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.latecomers.databinding.ActivityMainAdapterBinding
+import com.android.latecomers.databinding.RecommendedFriendBinding
 
 class MainAdapter(private val izone: MutableList<MemberData>) : RecyclerView
-.Adapter<MainAdapter.Holder>() {
-
+.Adapter<RecyclerView.ViewHolder>() {
     interface mainMemberClick {
         fun onTelClick(view: View, position: Int)
         fun onFavoritesClick(view: View, position: Int)
@@ -26,6 +26,14 @@ class MainAdapter(private val izone: MutableList<MemberData>) : RecyclerView
         val favorites = binding.mainFavorites
     }
 
+    inner class RecommendedHolder(val binding: RecommendedFriendBinding) : RecyclerView
+    .ViewHolder
+        (binding.root) {
+        val profile_recommended = binding.recommendedProfile
+        val name_recommended = binding.recommendedName
+        val tel_recommended = binding.recommendedTel
+    }
+
     override fun getItemCount(): Int {
         return izone.size
     }
@@ -37,28 +45,57 @@ class MainAdapter(private val izone: MutableList<MemberData>) : RecyclerView
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): Holder {
-        val binding = ActivityMainAdapterBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent, false
-        )
-        return Holder(binding)
+    ): RecyclerView.ViewHolder {
+//        val binding = ActivityMainAdapterBinding.inflate(
+//            LayoutInflater.from(parent.context),
+//            parent, false
+//        )
+        return when (viewType) {
+            MemberData.viewType_nomal -> {
+                val binding = ActivityMainAdapterBinding.inflate(LayoutInflater.from(parent
+                    .context),parent,false)
+                Holder(binding)
+            }
+
+            MemberData.viewType_recommend -> {
+                val binding = RecommendedFriendBinding.inflate(LayoutInflater.from(parent
+                    .context),parent,false)
+                RecommendedHolder(binding)
+            }
+
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.apply {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(getItemViewType(position)){
+            MemberData.viewType_nomal ->{
+                val normalHolder = holder as Holder
+                normalHolder.apply {
+                    tel.setOnClickListener {
+                        memberClick?.onTelClick(it, position)
+                    }
+                    favorites.setOnClickListener {
+                        memberClick?.onFavoritesClick(it, position)
+                    }
 
-            tel.setOnClickListener {
-                memberClick?.onTelClick(it, position)
+                    profile.setImageResource(izone[position].profile)
+                    name.text = izone[position].name
+                    tel.text = izone[position].tel
+                }
             }
-            favorites.setOnClickListener {
-                memberClick?.onFavoritesClick(it, position)
+            MemberData.viewType_recommend -> {
+                val recommendedHolder = holder as RecommendedHolder
+                recommendedHolder.apply {
+                    profile_recommended.setImageResource(izone[position].profile)
+                    name_recommended.text = izone[position].name
+                    tel_recommended.text = izone[position].tel
+                }
             }
-
-            profile.setImageResource(izone[position].profile)
-            name.text = izone[position].name
-            tel.text = izone[position].tel
         }
+    }
 
+    override fun getItemViewType(position: Int): Int {
+        return izone[position].type
     }
 }

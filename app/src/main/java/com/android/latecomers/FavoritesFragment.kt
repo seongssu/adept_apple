@@ -1,6 +1,8 @@
 package com.android.latecomers
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,6 +13,7 @@ import android.widget.ImageView
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.latecomers.databinding.FragmentFavoritesBinding
+import com.google.android.material.snackbar.Snackbar
 
 
 class FavoritesFragment : Fragment() {
@@ -51,7 +54,16 @@ class FavoritesFragment : Fragment() {
 
         adapter.memberClick = object : FavoritesAdapter.favoritesMemberClick {
             override fun onTelClick(view: View, position: Int) {
-                TODO("Not yet implemented")
+                val item = getFavoritesList[position]
+
+                val phoneNumber = item.tel
+                val intent = Intent(Intent.ACTION_CALL)
+                intent.data = Uri.parse("tel:$phoneNumber")
+                try {
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Snackbar.make(view, "전화 권한이 없습니다.", Snackbar.LENGTH_SHORT).show()
+                }
             }
 
             override fun onFavoritesClick(view: View, position: Int) {
@@ -63,11 +75,8 @@ class FavoritesFragment : Fragment() {
                     if (item.isFavorite) {
 //                    (view as ImageView).setImageResource(R.mipmap.paintedstar)
 //                    favoritesList.add(item)
-                    } else {
-                        (view as ImageView).setImageResource(R.mipmap.star)
                     }
                     favoreitesList.add(getFavoritesList[position])
-
                     getFavoritesList.removeAt(position)
                     adapter.notifyDataSetChanged()
                     adapter.notifyItemRemoved(position)
