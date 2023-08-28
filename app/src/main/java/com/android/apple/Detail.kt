@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.apple.databinding.ActivityDetailBinding
+import com.google.android.material.snackbar.Snackbar
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -54,6 +55,7 @@ class Detail : AppCompatActivity() {
             if ( items.isfavorite) {
                 binding.detailBtnlove.setImageResource(R.mipmap.redheart)
                 items.love++
+                Snackbar.make(binding.root, "관심 목록에 추가되었습니다",Snackbar.LENGTH_SHORT).show()
             } else {
                 binding.detailBtnlove.setImageResource(R.mipmap.heart)
                 items.love--

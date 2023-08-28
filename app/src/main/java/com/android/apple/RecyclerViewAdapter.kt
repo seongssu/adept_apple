@@ -16,6 +16,7 @@ class RecyclerViewAdapter(private val apple: MutableList<Item>) : RecyclerView
 
     interface ItemClick {
         fun onImageClick(view: View, position: Int)
+        fun onImageLongClick(view:View, position:Int)
         fun onLoveClick(view: View,position: Int)
     }
 
@@ -52,6 +53,10 @@ class RecyclerViewAdapter(private val apple: MutableList<Item>) : RecyclerView
         holder.apply {
             profile.setOnClickListener {
                 itemClick?.onImageClick(it, position)
+            }
+            profile.setOnLongClickListener {
+                itemClick?.onImageLongClick(it, position)
+                true
             }
             btn_love.setOnClickListener {
                 itemClick?.onLoveClick(it,position)

@@ -175,10 +175,32 @@ class MainActivity : AppCompatActivity() {
                 applelauncher.launch(intent)
             }
 
-            override fun onLoveClick(view: View, position: Int) {
-                val intent = Intent(this@MainActivity, Detail::class.java)
+            override fun onImageLongClick(view: View, position: Int) {
+                val builder = AlertDialog.Builder(this@MainActivity)
+                builder.setIcon(R.mipmap.chat)
+                builder.setTitle("상품 삭제")
+                builder.setMessage("상품을 정말로 삭제하시겠습니까?")
 
+                val listener = object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        when (which) {
+                            DialogInterface.BUTTON_POSITIVE -> {
+                                dataList.removeAt(position)
+                                adapter.notifyItemRemoved(position)
+                            }
+
+                            DialogInterface.BUTTON_NEGATIVE -> {
+                                dialog?.dismiss()
+                            }
+                        }
+                    }
+                }
+                builder.setPositiveButton("확인", listener)
+                builder.setNegativeButton("취소", listener)
+
+                builder.show()
             }
+            override fun onLoveClick(view: View, position: Int) {}
         }
         applelauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
