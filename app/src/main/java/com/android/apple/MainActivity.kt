@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AlphaAnimation
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.apple.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -162,6 +164,32 @@ class MainActivity : AppCompatActivity() {
         val adapter = RecyclerViewAdapter(dataList)
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
+        binding.floatingActionButton.setOnClickListener {
+            binding.recyclerview.scrollToPosition(0)
+        }
+
+        val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 500 }
+        val fadeOut = AlphaAnimation(1f, 0f).apply { duration = 500 }
+        var isTop = true
+        binding.recyclerview.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState:Int){
+                super.onScrollStateChanged(recyclerView, newState)
+                if(!binding.recyclerview.canScrollVertically(-1)&& newState == RecyclerView
+                        .SCROLL_STATE_IDLE){
+                    binding.floatingActionButton.startAnimation(fadeOut)
+                    binding.floatingActionButton.visibility = View.GONE
+                    isTop = true
+                }else{
+                    if(isTop){
+                        binding.floatingActionButton.visibility = View.VISIBLE
+                        binding.floatingActionButton.startAnimation(fadeIn)
+                        isTop = false
+                    }
+                }
+
+            }
+        })
+
 
         val dividerItemDecoration = DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
         binding.recyclerview.addItemDecoration(dividerItemDecoration)

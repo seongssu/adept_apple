@@ -64,7 +64,8 @@
         android:layout_margin="30dp"
         app:maxImageSize="75dp"
         android:scaleType="centerCrop"
-        android:clipToOutline="true"/>
+        android:clipToOutline="true"
+        android:visibility="gone"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
