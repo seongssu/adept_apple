@@ -147,12 +147,17 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/detail_btnlove"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            app:srcCompat="@drawable/btn_heart" />
+            app:srcCompat="@mipmap/heart" />
+        <TextView
+            android:id="@+id/detail_love"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
         <View
             android:layout_width="1dp"
