@@ -15,7 +15,8 @@ class RecyclerViewAdapter(private val apple: MutableList<Item>) : RecyclerView
 .Holder>() {
 
     interface ItemClick {
-        fun onClick(view: View, position: Int)
+        fun onImageClick(view: View, position: Int)
+        fun onLoveClick(view: View,position: Int)
     }
 
     var itemClick: ItemClick? = null
@@ -28,6 +29,7 @@ class RecyclerViewAdapter(private val apple: MutableList<Item>) : RecyclerView
         val price = binding.price
         var chat = binding.chat
         var love = binding.love
+        var btn_love = binding.btnLove
     }
 
 
@@ -41,19 +43,30 @@ class RecyclerViewAdapter(private val apple: MutableList<Item>) : RecyclerView
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.itemView.setOnClickListener{
-            itemClick?.onClick(it, position)
+        val item =  apple[position]
+        if (item.isfavorite) {
+            holder.btn_love.setImageResource(R.mipmap.redheart)
+        } else {
+            holder.btn_love.setImageResource(R.mipmap.heart)
         }
-        holder.profile.setImageResource(apple[position].profile)
-        holder.name.text = apple[position].name
-        holder.address.text = apple[position].adress
-        holder.chat.text = apple[position].chat.toString()
-        holder.love.text = apple[position].love.toString()
+        holder.apply {
+            profile.setOnClickListener {
+                itemClick?.onImageClick(it, position)
+            }
+            btn_love.setOnClickListener {
+                itemClick?.onLoveClick(it,position)
+            }
+            profile.setImageResource(apple[position].profile)
+            name.text = apple[position].name
+            address.text = apple[position].adress
+            chat.text = apple[position].chat.toString()
+            love.text = apple[position].love.toString()
 
-        val numberFormat = NumberFormat.getNumberInstance(Locale.US)
-        val intprice = numberFormat.format(apple[position].price)
-        val money = "$intprice 원"
-        holder.price.text = money
+            val numberFormat = NumberFormat.getNumberInstance(Locale.US)
+            val intprice = numberFormat.format(apple[position].price)
+            val money = "$intprice 원"
+            holder.price.text = money
+        }
     }
 
     override fun getItemCount(): Int {

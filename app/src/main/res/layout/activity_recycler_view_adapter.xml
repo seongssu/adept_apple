@@ -67,9 +67,10 @@
                 android:layout_marginHorizontal="10dp"/>
 
             <ImageView
+                android:id="@+id/btn_love"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                app:srcCompat="@drawable/btn_heart" />
+                app:srcCompat="@mipmap/heart" />
 
             <TextView
                 android:id="@+id/love"
