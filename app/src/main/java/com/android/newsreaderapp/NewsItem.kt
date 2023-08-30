@@ -1,6 +1,11 @@
 package com.android.newsreaderapp
 
-data class NewsItem (val title:String, val article:String) : conect
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class NewsItem (val profile:Int, val title:String, val content:String, val time:String) :
+    Parcelable, conect
 
 interface conect{}
 
