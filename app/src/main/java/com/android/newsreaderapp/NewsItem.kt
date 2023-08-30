@@ -1,6 +1,7 @@
 package com.android.newsreaderapp
 
-data class NewsItem (val title:String, val article:String) : conect
+data class NewsItem (val profile:Int, val title:String, val article:String, val time:String) :
+    conect
 
 interface conect{}
 
