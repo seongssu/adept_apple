@@ -28,18 +28,21 @@ class MainFragment : Fragment() {
         val view = binding.root
 
         val modelList = mutableListOf<MemberData>()
-        modelList.add(MemberData(viewType_nomal,R.drawable.character1, "권은비", "010-1111-1111"))
-        modelList.add(MemberData(viewType_nomal,R.drawable.character2, "강혜원", "010-2222-2222"))
-        modelList.add(MemberData(viewType_nomal,R.drawable.character3, "최예나", "010-3333-3333"))
-        modelList.add(MemberData(viewType_nomal,R.drawable.character4, "이채연", "010-4444-4444"))
-        modelList.add(MemberData(viewType_nomal,R.drawable.character5, "김채원", "010-5555-5555"))
-        modelList.add(MemberData(viewType_nomal,R.drawable.character6, "김민주", "010-6666-6666"))
-        modelList.add(MemberData(viewType_nomal,R.drawable.character7, "조유리", "010-7777-7777"))
-        modelList.add(MemberData(viewType_nomal,R.drawable.character8, "안유진", "010-8888-8888"))
-        modelList.add(MemberData(viewType_nomal,R.drawable.character9, "장원영", "010-9999-9999"))
-        modelList.add(MemberData(viewType_nomal,R.drawable.character10, "사쿠라", "010-1234-5678"))
-        modelList.add(MemberData(viewType_recommend,R.drawable.character11,"나코","010-1357-1357"))
-        modelList.add(MemberData(viewType_recommend,R.drawable.character12,"히토미","010-2468-2468"))
+        modelList.add(MemberData(0,0,"추천 친구 목록",""))
+        modelList.add(MemberData(2,R.drawable.character11,"나코","010-1357-1357"))
+        modelList.add(MemberData(2,R.drawable.character12,"히토미","010-2468-2468"))
+        modelList.add(MemberData(0,0,"친구 목록",""))
+        modelList.add(MemberData(1,R.drawable.character1, "권은비", "010-1111-1111"))
+        modelList.add(MemberData(1,R.drawable.character2, "강혜원", "010-2222-2222"))
+        modelList.add(MemberData(1,R.drawable.character3, "최예나", "010-3333-3333"))
+        modelList.add(MemberData(1,R.drawable.character4, "이채연", "010-4444-4444"))
+        modelList.add(MemberData(1,R.drawable.character5, "김채원", "010-5555-5555"))
+        modelList.add(MemberData(1,R.drawable.character6, "김민주", "010-6666-6666"))
+        modelList.add(MemberData(1,R.drawable.character7, "조유리", "010-7777-7777"))
+        modelList.add(MemberData(1,R.drawable.character8, "안유진", "010-8888-8888"))
+        modelList.add(MemberData(1,R.drawable.character9, "장원영", "010-9999-9999"))
+        modelList.add(MemberData(1,R.drawable.character10, "사쿠라", "010-1234-5678"))
+
         val adapter = MainAdapter(modelList)
         binding.mainRecyclerview.adapter = adapter
         binding.mainRecyclerview.layoutManager =
@@ -105,6 +108,17 @@ class MainFragment : Fragment() {
                 bundle.putParcelableArrayList("mainFavorites", favoritesList)
                 Log.d("FavoritesFragment", "MainFragment에서 넘겨주는 데이터 : ${bundle}")
                 setFragmentResult("requestKey", bundle)
+            }
+
+            override fun onProfileClick(view: View, position: Int) {
+                val item = modelList[position]
+                if(item.type == 2){
+                    item.type =1
+                    modelList.remove(item)
+                    modelList.add(item)
+                    Log.d("FavoritesFragment", "itemtype : ${item}")
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
         return view
