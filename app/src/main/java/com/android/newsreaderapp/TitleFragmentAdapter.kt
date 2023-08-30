@@ -37,6 +37,10 @@ class TitleFragmentAdapter(private val newList:MutableList<NewsItem>): RecyclerV
             profile.setImageResource(newList[position].profile)
             title.text = newList[position].title
             time.text = newList[position].time
+
+            itemView.setOnClickListener{
+                newsClick?.onClick(it,position)
+            }
         }
     }
 
