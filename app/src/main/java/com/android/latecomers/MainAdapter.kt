@@ -112,6 +112,16 @@ class MainAdapter(private val izone: MutableList<MemberData>) : RecyclerView
         }
     }
     override fun getItemViewType(position: Int): Int {
-        return izone[position].type
+        return if (izone[position].select) {
+                if(izone[position].type ==0){
+                    MemberData.viewType_title_nomal
+                }else{
+                    MemberData.viewType_nomal
+                }
+           } else {
+                MemberData.viewType_recommend
+            }
+
+        }
+
     }
-}
