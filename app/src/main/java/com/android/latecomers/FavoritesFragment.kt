@@ -67,6 +67,7 @@ class FavoritesFragment : Fragment() {
             }
 
             override fun onFavoritesClick(view: View, position: Int) {
+                Log.d("FavoritesFragment", "onFavoritesClick 호출됨")
                 if (position in 0 until getFavoritesList.size) {
                     val item = getFavoritesList[position]
                     item.isFavorite = !item.isFavorite
@@ -77,6 +78,7 @@ class FavoritesFragment : Fragment() {
 //                    favoritesList.add(item)
                     }
                     favoreitesList.add(getFavoritesList[position])
+                    favoreitesList.clear()
                     getFavoritesList.removeAt(position)
                     adapter.notifyDataSetChanged()
                     adapter.notifyItemRemoved(position)

@@ -4,12 +4,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.android.latecomers.databinding.ActivityMainAdapterBinding
 import com.android.latecomers.databinding.RecommendedFriendBinding
+import com.android.latecomers.databinding.TitleNomalBinding
 
 class MainAdapter(private val izone: MutableList<MemberData>) : RecyclerView
 .Adapter<RecyclerView.ViewHolder>() {
     interface mainMemberClick {
+        fun onProfileClick(view: View, position: Int)
         fun onTelClick(view: View, position: Int)
         fun onFavoritesClick(view: View, position: Int)
     }
@@ -17,9 +20,7 @@ class MainAdapter(private val izone: MutableList<MemberData>) : RecyclerView
     var memberClick: MainAdapter.mainMemberClick? = null
 
     inner class Holder(val binding: ActivityMainAdapterBinding) : RecyclerView.ViewHolder(
-        binding
-            .root
-    ) {
+        binding.root) {
         val profile = binding.mainProfile
         val name = binding.mainName
         val tel = binding.mainTel
@@ -31,44 +32,51 @@ class MainAdapter(private val izone: MutableList<MemberData>) : RecyclerView
         (binding.root) {
         val profile_recommended = binding.recommendedProfile
         val name_recommended = binding.recommendedName
-        val tel_recommended = binding.recommendedTel
     }
 
-    override fun getItemCount(): Int {
-        return izone.size
-    }
 
+    inner class titleNomalHolder(val binding: TitleNomalBinding) : RecyclerView.ViewHolder
+        (binding.root){
+            val title_nomal = binding.titleNomal
+        }
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
+    override fun getItemCount(): Int {
+        return izone.size
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): RecyclerView.ViewHolder {
-//        val binding = ActivityMainAdapterBinding.inflate(
-//            LayoutInflater.from(parent.context),
-//            parent, false
-//        )
         return when (viewType) {
+            MemberData.viewType_title_nomal ->{
+                val binding = TitleNomalBinding.inflate(LayoutInflater.from(parent.context),
+                    parent, false)
+                titleNomalHolder(binding)
+            }
             MemberData.viewType_nomal -> {
                 val binding = ActivityMainAdapterBinding.inflate(LayoutInflater.from(parent
                     .context),parent,false)
                 Holder(binding)
             }
-
             MemberData.viewType_recommend -> {
                 val binding = RecommendedFriendBinding.inflate(LayoutInflater.from(parent
                     .context),parent,false)
                 RecommendedHolder(binding)
             }
-
-            else -> throw IllegalArgumentException("Invalid view type")
+            else -> throw IllegalArgumentException("잘못된 viewType 입니다.")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(getItemViewType(position)){
+            MemberData.viewType_title_nomal -> {
+                val titleNomalHolder = holder as titleNomalHolder
+                titleNomalHolder.apply {
+                    title_nomal.text = izone[position].name
+                }
+            }
             MemberData.viewType_nomal ->{
                 val normalHolder = holder as Holder
                 normalHolder.apply {
@@ -87,14 +95,15 @@ class MainAdapter(private val izone: MutableList<MemberData>) : RecyclerView
             MemberData.viewType_recommend -> {
                 val recommendedHolder = holder as RecommendedHolder
                 recommendedHolder.apply {
+                   profile_recommended.setOnClickListener {
+                       memberClick?.onProfileClick(it, position)
+                   }
                     profile_recommended.setImageResource(izone[position].profile)
                     name_recommended.text = izone[position].name
-                    tel_recommended.text = izone[position].tel
                 }
             }
         }
     }
-
     override fun getItemViewType(position: Int): Int {
         return izone[position].type
     }
