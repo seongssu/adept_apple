@@ -3,6 +3,7 @@ package com.android.latecomers
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.android.latecomers.databinding.ActivityMainAdapterBinding
@@ -90,6 +91,12 @@ class MainAdapter(private val izone: MutableList<MemberData>) : RecyclerView
                     profile.setImageResource(izone[position].profile)
                     name.text = izone[position].name
                     tel.text = izone[position].tel
+
+                    if(izone[position].isFavorite ==true){
+                        binding.mainFavorites.setImageResource(R.mipmap.paintedstar)
+                    } else {
+                        binding.mainFavorites.setImageResource(R.mipmap.star)
+                    }
                 }
             }
             MemberData.viewType_recommend -> {
