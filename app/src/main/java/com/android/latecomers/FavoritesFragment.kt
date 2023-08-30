@@ -29,7 +29,8 @@ class FavoritesFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener("requestKey", this) { key, result ->
             val getFavoritesList = result.getParcelableArrayList<MemberData>("mainFavorites")
             if (getFavoritesList != null) {
-                Log.d("FavoritesFragment", "FavoritesFragment에서 받는 데이터1${getFavoritesList}")
+                Log.d("FavoritesFragment", "MainFragment에서 넘겨준 데이터를 FavoritesFragment에서 받는 " +
+                        "데이터${getFavoritesList}")
                 favoritesfragmentData(getFavoritesList)
             }
         }
@@ -45,8 +46,6 @@ class FavoritesFragment : Fragment() {
     }
 
     fun favoritesfragmentData(getFavoritesList: ArrayList<MemberData>) {
-
-        Log.d("FavoritesFragment", "FavoritesFragment에서 받은 데이터2 ${getFavoritesList}")
         val adapter = FavoritesAdapter(getFavoritesList)
         binding.favoritesRecyclerview.adapter = adapter
         binding.favoritesRecyclerview.layoutManager = LinearLayoutManager(requireContext())
@@ -77,8 +76,8 @@ class FavoritesFragment : Fragment() {
 //                    (view as ImageView).setImageResource(R.mipmap.paintedstar)
 //                    favoritesList.add(item)
                     }
-                    favoreitesList.add(getFavoritesList[position])
                     favoreitesList.clear()
+                    favoreitesList.add(getFavoritesList[position])
                     getFavoritesList.removeAt(position)
                     adapter.notifyDataSetChanged()
                     adapter.notifyItemRemoved(position)
@@ -87,7 +86,7 @@ class FavoritesFragment : Fragment() {
                     bundle1.putParcelableArrayList("FavoritesFavorites", favoreitesList)
                     Log.d(
                         "FavoritesFragment",
-                        "FavoriteFragment에서 다시 넘겨주는 데이터 : ${favoreitesList}"
+                        "FavoriteFragment에서 MainFragment로 넘겨주는 데이터 : ${favoreitesList}"
                     )
                     setFragmentResult("FavoritesrequestKey", bundle1)
 
